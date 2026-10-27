@@ -6,16 +6,16 @@
 <title>Meta Semanal de Estudos</title>
 <style>
 :root{
-  --bg:#F3F5F7;--surface:#fff;--ink:#16202A;--mut:#667382;--line:#E1E6EB;
-  --brand:#17324D;--brand-ink:#EAF1F8;--acc:#17324D;--on-acc:#fff;
-  --ok:#2A7F68;--warn:#A9620F;--bad:#B3261E;
+  --bg:#0F1419;--surface:#171D25;--ink:#D9DFE6;--mut:#8591A0;--line:#252D38;
+  --brand:#17222F;--brand-ink:#D5DFEA;--acc:#79AADC;--on-acc:#0B1420;
+  --ok:#5CBFA4;--warn:#DDA862;--bad:#EE8A83;
   --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
   --sans:"Inter","Segoe UI Variable","Segoe UI",system-ui,-apple-system,Roboto,Arial,sans-serif;
-  color-scheme:light}
-@media (prefers-color-scheme:dark){:root{
-  --bg:#0E1318;--surface:#161D25;--ink:#E7ECF1;--mut:#8E9BAA;--line:#242E39;
-  --brand:#1D3250;--acc:#7DB2E8;--on-acc:#0B1420;
-  --ok:#52C0A3;--warn:#E3A65A;--bad:#F2877F;color-scheme:dark}}
+  color-scheme:dark}
+:root[data-theme="light"]{
+  --bg:#F3F5F7;--surface:#fff;--ink:#16202A;--mut:#667382;--line:#E1E6EB;
+  --brand:#17324D;--brand-ink:#EAF1F8;--acc:#17324D;--on-acc:#fff;
+  --ok:#2A7F68;--warn:#A9620F;--bad:#B3261E;color-scheme:light}
 *{box-sizing:border-box}
 [hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-webkit-font-smoothing:antialiased}
@@ -26,6 +26,8 @@ body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--sans);-w
 header{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
 h1{font:600 30px/1.15 var(--serif);letter-spacing:-.02em;margin:0 0 6px}
 h2{font:600 19px/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 16px}
+.hr{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+#themeb{padding:4px 12px;font-size:13px}
 .streak{color:var(--ok);font-weight:600;font-size:13px;border:1px solid currentColor;padding:4px 12px;border-radius:999px;white-space:nowrap}
 .wk{display:flex;align-items:center;gap:10px;margin:26px 0 20px}
 .wk b{font-variant-numeric:tabular-nums;min-width:170px;text-align:center}
@@ -36,10 +38,10 @@ h2{font:600 19px/1.2 var(--serif);letter-spacing:-.01em;margin:0 0 16px}
 .timer h2{color:var(--brand-ink)}
 .timer .mut{color:rgba(234,241,248,.62)}
 .timer select,.timer input{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.2);color:inherit}
-.timer option{color:#16202A}
+.timer option{color:var(--ink);background:var(--surface)}
 .timer button{background:transparent;border-color:rgba(255,255,255,.32);color:inherit}
-.timer button:hover{border-color:#fff}
-.timer button.pri{background:#fff;border-color:#fff;color:var(--brand)}
+.timer button:hover{border-color:var(--brand-ink)}
+.timer button.pri{background:var(--brand-ink);border-color:var(--brand-ink);color:var(--brand)}
 .timer :focus-visible{outline-color:#fff}
 #fim{display:flex;justify-content:space-between;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 18px;margin:0 0 14px}
 #rep{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:24px;margin:0 0 14px}
@@ -118,6 +120,16 @@ td input{width:68px;padding:5px 9px}
 .cf2{position:fixed;width:8px;height:12px;border-radius:2px;pointer-events:none;z-index:9;animation:pop 1.3s ease-out forwards}
 @keyframes pop{to{transform:translate(var(--x),calc(var(--y) + 320px)) rotate(var(--r));opacity:0}}
 
+#foco{position:fixed;inset:0;z-index:20;background:#0A0F15;color:#CFD9E4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:30px;padding:24px;text-align:center}
+#fnome{font:600 clamp(18px,3vw,30px) var(--serif);opacity:.8}
+#fclock{font-size:clamp(64px,19vw,280px);line-height:1;font-weight:300;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+#foco.pausa #fclock{opacity:.45}
+#foco .btns{flex-wrap:wrap}
+#foco .btns button{background:transparent;border-color:rgba(255,255,255,.35);color:inherit;padding:13px 32px;font-size:17px}
+#foco .btns button:hover{border-color:#fff}
+#foco .btns button.pri{background:#CFD9E4;color:#0A0F15;border-color:#CFD9E4}
+#foco :focus-visible{outline-color:#fff}
+.fhint{position:absolute;bottom:22px;font-size:13px;opacity:.55}
 @media (max-width:560px){
   .wrap{padding:24px 14px 70px}.clock{font-size:52px}.card.timer{padding:22px}
   .qf{grid-template-columns:1fr 1fr}.qf select,.qf button{grid-column:1/-1}
@@ -125,9 +137,9 @@ td input{width:68px;padding:5px 9px}
 }
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media print{
-  :root{--bg:#fff;--surface:#fff;--ink:#000;--mut:#555;--line:#ccc;--ok:#1b6b50;--warn:#8a4a00;--bad:#a11}
+  :root[data-theme]{--bg:#fff;--surface:#fff;--ink:#000;--mut:#555;--line:#ccc;--ok:#1b6b50;--warn:#8a4a00;--bad:#a11}
   .wrap>*{display:none!important}.wrap>#rep{display:block!important}.wrap>#rep[hidden]{display:none!important}
-  .noprint{display:none!important}#rep{border:0;padding:0}
+  .noprint,#foco{display:none!important}#rep{border:0;padding:0}
   td input{border:0;width:auto;padding:0;appearance:textfield}
 }
 </style>
@@ -136,10 +148,10 @@ td input{width:68px;padding:5px 9px}
 <div class="wrap">
   <header>
     <div><h1>Meta Semanal de Estudos</h1><div class="mut" id="msg"></div></div>
-    <div class="streak" id="streak"></div>
+    <div class="hr"><div class="streak" id="streak"></div><button id="themeb" onclick="toggleTheme()"></button></div>
   </header>
 
-  <nav class="wk"><button onclick="nav(-1)" aria-label="Semana anterior">‹</button><b id="wlabel"></b><button onclick="nav(1)" aria-label="Próxima semana">›</button><button onclick="repOpen()">Relatório</button></nav>
+  <nav class="wk"><button onclick="nav(-1)" aria-label="Semana anterior">‹</button><b id="wlabel" onclick="off=0;render()" style="cursor:pointer"></b><button onclick="nav(1)" aria-label="Próxima semana">›</button><button onclick="repOpen()">Relatório</button></nav>
 
   <div class="card" id="fim" hidden>Fim de semana: hora de fechar a semana. <button class="pri" onclick="repOpen()">Ver relatório</button></div>
 
@@ -157,6 +169,7 @@ td input{width:68px;padding:5px 9px}
     <div class="clock" id="clock">00:00:00</div>
     <div class="btns" id="tbtns"></div>
     <div class="mut" style="text-align:center;font-size:12px;margin-top:8px">Atalho: barra de espaço inicia e pausa</div>
+    <div style="text-align:center;margin-top:14px"><button onclick="focoOpen()">Tela cheia (modo foco)</button></div>
     <div class="manual"><span class="mut">Esqueceu de cronometrar?</span><input id="mmin" type="number" min="1" placeholder="min"><button onclick="addManual()">Adicionar minutos na matéria selecionada</button></div>
   </section>
 
@@ -188,6 +201,9 @@ td input{width:68px;padding:5px 9px}
     <div id="cfg"></div>
     <button onclick="addSub()">+ Matéria</button>
     <button class="ghost" onclick="resetAll()">Apagar todos os dados</button>
+    <h2 style="margin-top:30px">Contagem das semanas</h2>
+    <p class="mut" style="margin:0 0 10px">A numeração começa na sua primeira semana de uso. Para ajustar, informe o número da semana atual.</p>
+    <input id="wnum" type="number" min="1" style="width:110px"> <button onclick="setWeek()">Salvar</button>
     <h2 style="margin-top:30px">Backup dos seus dados</h2>
     <p class="mut" id="bkinfo" style="margin:0 0 10px"></p>
     <button class="pri" onclick="exportBk()">Baixar backup</button>
@@ -196,6 +212,12 @@ td input{width:68px;padding:5px 9px}
   </details>
 </div>
 
+<div id="foco" hidden>
+  <div id="fnome"></div>
+  <div id="fclock">00:00:00</div>
+  <div class="btns" id="fbtns"></div>
+  <div class="fhint">Esc para sair. Espaço pausa e continua.</div>
+</div>
 <div id="toast"></div>
 <script>
 const KEY = 'metaSemanal.v1';
@@ -206,9 +228,22 @@ const DAY = 864e5;
 let S = load(), off = 0;
 
 function load(){
-  try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && r.subjects) { if (!r.qw) { r.qw = {}; (r.questions||[]).forEach(x=>{ const k=String(mon(x.t).getTime()), o=r.qw[k]=r.qw[k]||{}, y=o[x.s]=o[x.s]||{c:0,e:0}; y.c+=x.c; y.e+=x.d-x.c; }); } return r; } } catch(e){}
-  return { subjects: DEF.map((d,i)=>({id:'m'+i,name:d[0],goal:d[1],color:PAL[i]})), sessions:[], qw:{}, timer:null };
+  try { const r = JSON.parse(localStorage.getItem(KEY)); if (r && r.subjects) { if (!r.qw) { r.qw = {}; (r.questions||[]).forEach(x=>{ const k=String(mon(x.t).getTime()), o=r.qw[k]=r.qw[k]||{}, y=o[x.s]=o[x.s]||{c:0,e:0}; y.c+=x.c; y.e+=x.d-x.c; }); } return initStart(r); } } catch(e){}
+  return { subjects: DEF.map((d,i)=>({id:'m'+i,name:d[0],goal:d[1],color:PAL[i]})), sessions:[], qw:{}, timer:null, start:mon(new Date()).getTime() };
 }
+function initStart(r){
+  if (!r.start) {
+    const ts = [...(r.sessions||[]).map(x=>mon(x.t).getTime()), ...Object.keys(r.qw||{}).map(Number)];
+    r.start = ts.length ? Math.min(...ts) : mon(new Date()).getTime();
+  }
+  return r;
+}
+function applyTheme(){
+  const t = S.theme==='claro' ? 'light' : 'dark';
+  document.documentElement.dataset.theme = t;
+  const b = document.getElementById('themeb'); if (b) b.textContent = t==='dark' ? 'Modo claro' : 'Modo escuro';
+}
+function toggleTheme(){ S.theme = S.theme==='claro' ? 'escuro' : 'claro'; save(); applyTheme(); }
 function save(){ try { localStorage.setItem(KEY, JSON.stringify(S)); } catch(e){} }
 
 const $ = id => document.getElementById(id);
@@ -224,6 +259,16 @@ function mon(d){ const x = new Date(d); x.setHours(0,0,0,0); x.setDate(x.getDate
 function range(o=off){ const a = mon(new Date()); a.setDate(a.getDate()+o*7); const b = new Date(a); b.setDate(b.getDate()+7); return [a.getTime(), b.getTime()]; }
 const stamp = () => off===0 ? Date.now() : range()[0]+12*36e5;
 
+const weekNum = a => Math.round((a - S.start)/(7*DAY)) + 1;
+function minOff(){
+  const cur = range(0)[0]; let m = 1 - weekNum(cur);
+  [...S.sessions.map(x=>mon(x.t).getTime()), ...Object.keys(S.qw).map(Number)].forEach(t => { m = Math.min(m, Math.round((t-cur)/(7*DAY))); });
+  return m;
+}
+function setWeek(){
+  const n = Math.floor(+$('wnum').value||0); if (n<1) return;
+  S.start = range(0)[0] - (n-1)*7*DAY; $('wnum').value = ''; save(); render(); toast('Agora esta é a Semana '+n+'.');
+}
 function week(o=off){
   const [a,b] = range(o), sec = {}, q = {}, qo = S.qw[String(a)] || {};
   S.subjects.forEach(s => { const x = qo[s.id] || {c:0,e:0}; sec[s.id]=0; q[s.id]={d:x.c+x.e,c:x.c}; });
@@ -248,7 +293,7 @@ function addQ(){
   x.c += c; x.e += e; $('qc').value=''; $('qe').value=''; save(); render();
 }
 function del(id){ S.sessions = S.sessions.filter(x=>x.id!==id); save(); render(); }
-function nav(d){ off = Math.min(0, off+d); render(); }
+function nav(d){ off = Math.max(minOff(), Math.min(12, off+d)); render(); }
 
 function streak(){
   const days = new Set(S.sessions.map(x=>dkey(x.t)));
@@ -265,9 +310,10 @@ function fillSel(el, val){
 }
 
 function render(){
+  applyTheme();
   const w = week(), t = S.timer;
   const f = d => new Date(d).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-  $('wlabel').textContent = f(w.a)+' – '+f(w.b-1)+(off===0?' (esta semana)':'');
+  $('wlabel').textContent = 'Semana '+weekNum(w.a)+(off===0?' (atual)':''); $('wlabel').title = f(w.a)+' a '+f(w.b-1)+'. Clique para voltar à semana atual.'; $('wnum').placeholder = 'atual: '+weekNum(range(0)[0]);
   const n = streak();
   $('streak').textContent = n>0 ? n+(n===1?' dia seguido':' dias seguidos') : 'Comece hoje';
 
@@ -314,11 +360,12 @@ function render(){
   $('badges').innerHTML = `<div class="lvl"><b>Nível ${Math.floor(ht/10)+1}</b><span class="mut">${(10-ht%10).toFixed(1).replace('.',',')}h para o próximo (cada nível = 10h estudadas)</span><div class="bar"><u style="width:${ht%10*10}%"></u></div></div>` + B.map(b=>`<span class="bd${b[1]?' on':''}">${b[1]?'✓ ':''}${b[0]}</span>`).join('');
   $('fim').hidden = !(off===0 && [0,6].includes(new Date().getDay()));
   if (!$('rep').hidden && !editing) repRender();
+  focoRender();
 }
 
 function tick(){
   const t = S.timer, e = elapsed();
-  $('clock').textContent = clock(e);
+  $('clock').textContent = clock(e); if (!$('foco').hidden) $('fclock').textContent = clock(e);
   document.title = t && t.started ? clock(e)+' · Estudando' : 'Meta Semanal de Estudos';
 }
 setInterval(tick, 1000);
@@ -392,18 +439,39 @@ $('bkfile').addEventListener('change', e => {
       const o = JSON.parse(r.result);
       if (!o || !Array.isArray(o.subjects) || !Array.isArray(o.sessions) || !o.qw || typeof o.qw !== 'object') throw 0;
       if (!confirm('Restaurar este backup? Os dados atuais deste navegador serão substituídos.')) return;
-      S = o; S.timer = null; save(); off = 0; renderCfg(); render(); bkInfo(); toast('Backup restaurado.');
+      S = initStart(o); S.timer = null; save(); off = 0; renderCfg(); render(); bkInfo(); toast('Backup restaurado.');
     } catch (err) { alert('Esse arquivo não parece ser um backup deste app.'); }
   };
   r.readAsText(f); e.target.value = '';
 });
+function focoOpen(){
+  if (!S.timer) tStart();
+  $('foco').hidden = false; if (document.activeElement) document.activeElement.blur();
+  const r = document.documentElement.requestFullscreen && document.documentElement.requestFullscreen();
+  if (r && r.catch) r.catch(()=>{});
+  focoRender(); $('fclock').textContent = clock(elapsed());
+}
+function focoClose(){
+  $('foco').hidden = true;
+  if (document.fullscreenElement && document.exitFullscreen) document.exitFullscreen().catch(()=>{});
+}
+function focoRender(){
+  if ($('foco').hidden) return;
+  const t = S.timer; if (!t) { focoClose(); return; }
+  const m = sub(t.s); $('fnome').textContent = m ? m.name : '';
+  $('foco').classList.toggle('pausa', !t.started);
+  $('fbtns').innerHTML = (t.started ? '<button class="pri" onclick="tPause()">Pausar</button>' : '<button class="pri" onclick="tStart()">Continuar</button>')
+    + '<button onclick="tStop()">Parar e salvar</button><button onclick="focoClose()">Sair da tela cheia</button>';
+}
+document.addEventListener('fullscreenchange', () => { if (!document.fullscreenElement && !$('foco').hidden) focoClose(); });
+document.addEventListener('keydown', e => { if (e.key==='Escape' && !$('foco').hidden) focoClose(); });
 let editing = false;
 const sg = n => (n>=0 ? '+' : '−') + Math.abs(n);
 function repOpen(){ $('rep').hidden = false; repRender(); $('rep').scrollIntoView({behavior:'smooth'}); }
 function repClose(){ $('rep').hidden = true; }
 function repRender(){
   const w = week(), f = d => new Date(d).toLocaleDateString('pt-BR',{day:'2-digit',month:'2-digit'});
-  $('repTitle').textContent = 'Relatório da semana ' + f(w.a) + ' – ' + f(w.b-1);
+  $('repTitle').textContent = 'Relatório da Semana ' + weekNum(w.a);
   $('repBody').innerHTML = '<div class="tw"><table><thead><tr><th>Matéria</th><th>Horas</th><th>Acertos</th><th>Erros</th><th>Total</th><th>% acerto</th><th>Próxima semana</th></tr></thead><tbody>' +
     S.subjects.map(s => { const q = w.q[s.id], i = s.id;
       return `<tr><td><span class="dot" style="background:${esc(s.color)}"></span> ${esc(s.name)}</td><td>${fmt(w.sec[i])} / ${fg(s.goal)}h</td><td><input type="number" min="0" placeholder="0" value="${q.c||''}" data-id="${i}" data-f="c"></td><td><input type="number" min="0" placeholder="0" value="${(q.d-q.c)||''}" data-id="${i}" data-f="e"></td><td id="rt${i}"></td><td id="rp${i}"></td><td id="rs${i}"></td></tr>`; }).join('') +
@@ -443,7 +511,6 @@ $('repBody').addEventListener('input', e => {
   save(); editing = true; repUpdate(); render(); editing = false;
 });
 
-  
 renderCfg(); render(); bkInfo();
 </script>
 </body>
